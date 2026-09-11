@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Karakter - Tema Abu Gelap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", "Times New Roman", serif;
+        }
+
+        /* 🎨 WARNA TEMA KAMU */
+        :root {
+            --warna-terang: #7c7985;
+            --warna-sedang: #56545e;
+            --warna-gelap: #403e46;
+            --warna-paling-gelap: #323038;
+            --putih-teks: #f0f0f2;
+            --hijau-pilih: #8fbc8f; /* Warna sorotan tetap jelas */
+            --merah-batal: #a85555;
+            --bayang: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background: linear-gradient(145deg, var(--warna-paling-gelap), var(--warna-gelap));
+            min-height: 100vh;
+            padding: 2.5rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wadah-utama {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .judul-besar {
+            color: var(--putih-teks);
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.8px;
+        }
+
+        .pilihan-karakter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.4rem;
+            margin-bottom: 2.2rem;
+            flex-wrap: wrap;
+        }
+
+        .kartu-karakter {
+            width: 200px;
+            height: 200px;
+            background: var(--warna-sedang);
+            border: 3px solid var(--warna-terang);
+            border-radius: 50%;
+            padding: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            color: var(--putih-teks);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .kartu-karakter:hover {
+            transform: scale(1.08);
+            border-color: var(--hijau-pilih);
+            box-shadow: 0 8px 20px var(--bayang);
+        }
+
+        .kartu-karakter.aktif {
+            border-color: var(--hijau-pilih);
+            box-shadow: 0 0 25px rgba(143, 188, 143, 0.3);
+            transform: scale(1.1);
+        }
+
+        .gambar-karakter {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .nama-karakter {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.65);
+            padding: 0.6rem 0;
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--putih-teks);
+        }
+
+        .kotak-info-hasil {
+            background: var(--warna-gelap);
+            border-radius: 50px;
+            padding: 1.2rem 2rem;
+            text-align: center;
+            border: 2px solid var(--warna-terang);
+            box-shadow: 0 6px 18px var(--bayang);
+            margin-bottom: 1.5rem;
+        }
+        .label-pilihan {
+            color: var(--warna-terang);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .teks-terpilih {
+            color: var(--hijau-pilih);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .kotak-konfirmasi {
+            width: 100%;
+            background: var(--warna-gelap);
+            border: 2px solid var(--warna-terang);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 6px 18px var(--bayang);
+            display: none;
+        }
+        .teks-konfirmasi {
+            color: var(--putih-teks);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .tombol {
+            padding: 0.7rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: 0.2s;
+        }
+        .tombol-ya {
+            background: var(--hijau-pilih);
+            color: var(--warna-paling-gelap);
+        }
+        .tombol-ya:hover { transform: scale(1.05); }
+        .tombol-batal {
+            background: var(--merah-batal);
+            color: var(--putih-teks);
+        }
+        .tombol-batal:hover { transform: scale(1.05); }
+
+        @media (max-width: 480px) {
+            .kartu-karakter {
+                width: 160px;
+                height: 160px;
+            }
+            .nama-karakter { font-size: 1rem; padding: 0.5rem 0; }
+            .kotak-info-hasil { padding: 1rem 1.5rem; }
+            .kotak-konfirmasi { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wadah-utama">
+        <h1 class="judul-besar">PILIH DIVISI MU</h1>
+
+        <div class="pilihan-karakter">
+            <div class="kartu-karakter" onclick="pilihKarakter(0)">
+                <img src="NS.jpg" alt="Ksatria" class="gambar-karakter">
+                <div class="nama-karakter">AFS</div>
+            </div>
+
+            <div class="kartu-karakter" onclick="pilihKarakter(1)">
+                <img src="AS.jpg" alt="Penyihir" class="gambar-karakter">
+                <div class="nama-karakter">AS</div>
+            </div>
+
+            <div class="kartu-karakter" onclick="pilihKarakter(2)">
+                <img src="AFS.jpg" alt="Pemanah" class="gambar-karakter">
+                <div class="nama-karakter">NS</div>
+            </div>
+        </div>
+
+        <div class="kotak-info-hasil">
+            <span class="label-pilihan">Divisi Pilihanmu:</span>
+            <span id="tampilHasil" class="teks-terpilih">— Belum Dipilih —</span>
+        </div>
+
+        <div id="kotakKonfirmasi" class="kotak-konfirmasi">
+            <p id="teksKonfirmasi" class="teks-konfirmasi"></p>
+            <button class="tombol tombol-ya" onclick="lanjut()">YA, PILIH</button>
+            <button class="tombol tombol-batal" onclick="batal()">BATAL</button>
+        </div>
+    </div>
+
+    <script>
+        const dataKarakter = [
+            { nama: "Air Force Soldier", link: "https://docs.google.com/document/d/1EVgsk8KX8pWfnY_trHg5xMQ6PhcWMoLSDnWBjAsdqyQ/edit?usp=drivesdk" },
+            { nama: "Army Soldier", link: "https://docs.google.com/document/d/10ui4NDpLdV_kJV3KYtHPKvfVjPwQVNXx2VSRSd_3xHM/edit?usp=drivesdk" },
+            { nama: "Navy Soldier", link: "https://docs.google.com/document/d/16gjTibzkWt_Vrd1Gj13K8g8XOgNvCHDiuShayr2f54I/edit?usp=drivesdk" }
+        ];
+
+        const kartu = document.querySelectorAll(".kartu-karakter");
+        const tampilHasil = document.getElementById("tampilHasil");
+        const kotakKonfirmasi = document.getElementById("kotakKonfirmasi");
+        const teksKonfirmasi = document.getElementById("teksKonfirmasi");
+
+        let indeksDipilih = null;
+
+        function pilihKarakter(indeks) {
+            indeksDipilih = indeks;
+            kartu.forEach(el => el.classList.remove("aktif"));
+            kartu[indeks].classList.add("aktif");
+            tampilHasil.textContent = dataKarakter[indeks].nama;
+
+            teksKonfirmasi.textContent = `Yakin ingin memilih: ${dataKarakter[indeks].nama}?`;
+            kotakKonfirmasi.style.display = "block";
+        }
+
+        function lanjut() {
+            if (indeksDipilih !== null) {
+                window.location.href = dataKarakter[indeksDipilih].link;
+            }
+        }
+
+        function batal() {
+            kotakKonfirmasi.style.display = "none";
+            indeksDipilih = null;
+            kartu.forEach(el => el.classList.remove("aktif"));
+            tampilHasil.textContent = "— Belum Dipilih —";
+        }
+    </script>
+</body>
+</html>

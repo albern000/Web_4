@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="webbstyle.css">
+    <title>AOT</title>
+</head>
+<body>
+    
+    <!-- Bar Navigasi -->
+    <nav>
+        <div class="logo">SQ (AOT)</div>
+        <div class="menu">
+            <button class="open-btn" onclick="bukaMenu()">☰ Menu</button>
+            <div class="overlay" onclick="tutupMenu()"></div>
+            <div class="sidebar" id="samping">
+                <span class="close-btn" onclick="tutupMenu()">&times;</span>
+                <a href="#">Beranda</a>
+                <a href="pw-input.html">input data</a>
+                <a href="info-point.html">informasi point</a>
+                <a href="#">Unif event</a>
+                <a href="#">Unif admin</a>
+        </div>
+    </nav>
+
+    <!-- Bagian Utama -->
+    <section class="hero">
+        <h1>Welcome to Association of Troops</h1>
+        <p>Kesetiaan, Keberanian, Pengabdian. Menjaga loyalitas dengan kekuatan dan ketangguhan.</p>
+        <a href="pilihanuniv.html" class="tombol">Pilih Divisi anda</a>
+    </section>
+
+    <!-- Bagian Satuan/Fitur -->
+    <section class="unit">
+        <div class="kartu">
+            <h3>Kekuatan Utama</h3>
+            <p>Percaya diri, Tak Kenal Takut dan Pantang Menyerah</p>
+        </div>
+        <div class="kartu">
+            <h3>Ketangguhan Mental</h3>
+            <p>Tahan uji, pantang menyerah, dan siap berkorban demi squad.</p>
+        </div>
+        <div class="kartu">
+            <h3>Presisi & Strategi</h3>
+            <p>Bekerja terencana, terarah, dan akurat dalam setiap tindakan.</p>
+        </div>
+    </section>
+
+    <!-- Kaki Halaman -->
+    <footer>
+        &copy; Squad ini di bangun pada 17 Agustus 2026
+    </footer>
+    <script>
+        function bukaMenu() {
+          document.getElementById('samping').classList.add('active');
+          document.querySelector('.overlay').classList.add('active');
+        }
+        
+        function tutupMenu() {
+           document.getElementById('samping').classList.remove('active');
+           document.querySelector('.overlay').classList.remove('active');
+            
+        }
+    </script>
+
+</body>
+</html>

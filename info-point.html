@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Output - Diurutkan Poin</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Times New Roman",serif;}
+        :root {
+            --latar-rumput: #323038;
+            --daun-terang: #7c7985;
+            --daun-tengah: #7c7985;
+            --daun-bayang: #7c7985;
+            --daun-gelap: #323038;
+            --batu-terang: #7c7985;
+            --batu-utama: #323038;
+            --batu-gelap: #5E5548;
+            --putih: #FFFFFF;
+            --abu-baris: #F3F5F4;
+        }
+        body {
+            background: linear-gradient(135deg, var(--latar-rumput), var(--daun-terang));
+            min-height:100vh;padding:2rem 1.5rem;
+        }
+        .wadah {max-width:550px;margin:0 auto;}
+        .judul {
+            background:linear-gradient(90deg,var(--daun-tengah),var(--daun-bayang));
+            color:white;padding:1.4rem;text-align:center;font-size:1.6rem;
+            border-radius:12px;margin-bottom:1.5rem;box-shadow:0 6px 20px rgba(0,0,0,.2);
+        }
+        table {
+            width:100%;border-collapse:collapse;background:white;border-radius:12px;
+            overflow:hidden;box-shadow:0 8px 24px rgba(45,71,43,.25);margin-bottom:0;
+        }
+        th {
+            background:var(--batu-utama);color:white;padding:1rem;text-align:left;
+            font-size:1.15rem;border:2px solid var(--batu-terang);
+        }
+        td {padding:1rem;border:2px solid var(--batu-terang);font-size:1.1rem;color:var(--daun-gelap);}
+        tr:nth-child(even) {background:var(--abu-baris);}
+        tr:hover {background:var(--latar-rumput);}
+        tr.terbanyak {background: #FFF3CD; font-weight: bold;}
+        .total {
+            background:var(--batu-terang);border:2px solid var(--batu-utama);border-top:none;
+            border-radius:0 0 12px 12px;padding:1.2rem;text-align:right;font-size:1.35rem;
+            font-weight:bold;color:var(--daun-gelap);box-shadow:0 8px 24px rgba(45,71,43,.2);
+        }
+        #kosong {text-align:center;padding:3rem;color:var(--batu-gelap);font-style:italic;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+        <div class="judul">Data Poin Member (AOT)</div>
+        <table>
+            <thead><tr><th>No</th><th>Nama</th><th>Poin</th></tr></thead>
+            <tbody id="isiTabel"></tbody>
+        </table>
+        <div class="total">Total Semua: <span id="jum">0</span></div>
+    </div>
+
+    <script>
+        const KUNCI = "dataPoinBersama";
+
+        function muatTampil() {
+            let data;
+            try {data = JSON.parse(localStorage.getItem(KUNCI) || "{}");}
+            catch {data = {};}
+
+            const tb = document.getElementById("isiTabel");
+            tb.innerHTML = "";
+            let daftar = Object.entries(data);
+            daftar.sort((a, b) => b[1] - a[1]); // urut poin turun
+            let tot = 0;
+
+            if (!daftar.length) {
+                tb.innerHTML = `<tr><td colspan="3" id="kosong">Menunggu data dari Web Input...</td></tr>`;
+                document.getElementById("jum").textContent = "0";
+                return;
+            }
+
+            daftar.forEach((item, i) => {
+                let nm = item[0];
+                let poin = item[1];
+                let tr = document.createElement("tr");
+                if (i === 0) tr.classList.add("terbanyak");
+                tr.innerHTML = `<td>${i+1}</td><td>${nm}</td><td>${poin}</td>`;
+                tb.appendChild(tr);
+                tot += poin;
+            });
+            document.getElementById("jum").textContent = tot;
+        }
+        muatTampil();
+        setInterval(muatTampil, 250);
+    </script>
+</body>
+</html>

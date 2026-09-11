@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Input + Hapus</title>
+    <style>
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Times New Roman",serif;}
+        :root {
+            --latar-rumput: #7c7985;
+            --daun-terang: #56545e;
+            --daun-tengah: #403e46;
+            --daun-bayang: #323038;
+            --daun-gelap: #323038;
+            --batu-terang: #D9C9AA;
+            --batu-utama: #BBA990;
+            --batu-gelap: #5E5548;
+            --putih-lunak: #F8F9F5;
+            --merah: #b33a3a;
+            --merah-terang: #d9534f;
+        }
+        body {
+            background: linear-gradient(135deg, var(--latar-rumput), var(--daun-terang));
+            min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;
+        }
+        .wadah {
+            background:var(--putih-lunak);width:100%;max-width:480px;
+            border-radius:14px;box-shadow:0 8px 24px rgba(45,71,43,.25);overflow:hidden;
+        }
+        .judul {
+            background:linear-gradient(90deg,var(--daun-tengah),var(--daun-bayang));
+            color:white;padding:1.4rem;text-align:center;font-size:1.6rem;letter-spacing:1px;
+        }
+        .isi {padding:2rem;}
+        .grup {margin-bottom:1.8rem;}
+        label {
+            display:block;margin-bottom:.5rem;color:var(--batu-gelap);font-weight:bold;font-size:1.1rem;
+        }
+        input {
+            width:100%;padding:.9rem 1rem;border:2px solid var(--batu-utama);
+            border-radius:6px;font-size:1.05rem;color:var(--daun-gelap);background:white;
+        }
+        input:focus {outline:none;border-color:var(--daun-bayang);box-shadow:0 0 0 3px rgba(72,112,66,.15);}
+        #tambah {text-align:right;}
+        .tombol {
+            width:100%;padding:1rem;background:linear-gradient(90deg,var(--daun-bayang),var(--daun-gelap));
+            color:white;border:none;border-radius:6px;font-size:1.15rem;font-weight:bold;
+            cursor:pointer;transition:transform .2s;
+        }
+        .tombol:hover {transform:translateY(-2px);}
+        .tombol-hapus {
+            width:100%;padding:1rem;background:linear-gradient(90deg,var(--merah),var(--merah-terang));
+            color:white;border:none;border-radius:6px;font-size:1.15rem;font-weight:bold;
+            cursor:pointer;transition:transform .2s;margin-top:.8rem;
+        }
+        .tombol-hapus:hover {transform:translateY(-2px);}
+        #pesan {margin-top:1rem;text-align:center;display:none;font-size:1.05rem;}
+        .garis-pemisah {
+            height:2px;background:var(--batu-terang);margin:1.5rem 0;border-radius:1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wadah">
+        <div class="judul">input data member AOT</div>
+        <div class="isi">
+            <!-- BAGIAN TAMBAH POIN -->
+            <form id="formKu">
+                <div class="grup">
+                    <label>Nama member:</label>
+                    <input type="text" id="nama" placeholder="Contoh: A / Budi" required>
+                </div>
+                <div class="grup">
+                    <label>Jumlah point:</label>
+                    <input type="number" id="tambah" min="0" value="0" required placeholder="10">
+                </div>
+                <button type="submit" class="tombol">💾 INPUT</button>
+            </form>
+
+            <div class="garis-pemisah"></div>
+
+            <!-- BAGIAN HAPUS PER NAMA -->
+            <div class="grup">
+                <label>Hapus Data Berdasarkan Nama:</label>
+                <input type="text" id="namaHapus" placeholder="Tulis nama yang mau dihapus...">
+            </div>
+            <button type="button" class="tombol-hapus" onclick="hapusSatu()"> HAPUS DATA </button>
+
+            <div id="pesan"></div>
+        </div>
+    </div>
+
+    <script>
+        const KUNCI = "dataPoinBersama"; // Sama persis dengan output
+
+        function ambilData() {
+            let d = localStorage.getItem(KUNCI);
+            return d ? JSON.parse(d) : {};
+        }
+        function simpanData(obj) {
+            localStorage.setItem(KUNCI, JSON.stringify(obj));
+        }
+
+        // 👉 FUNGSI TAMBAH / TAMBAH POIN
+        document.getElementById("formKu").addEventListener("submit", e => {
+            e.preventDefault();
+            let nm = document.getElementById("nama").value.trim();
+            let tmb = parseInt(document.getElementById("tambah").value);
+            let data = ambilData();
+
+            data[nm] = (data[nm] || 0) + tmb;
+            simpanData(data);
+
+            tampilPesan(`✅ Tersimpan! ${nm}: ${data[nm]} poin`, "var(--daun-gelap)");
+            document.getElementById("nama").value = "";
+            document.getElementById("tambah").value = "";
+        });
+
+        // 👉 FUNGSI HAPUS SATU DATA
+        function hapusSatu() {
+            let nm = document.getElementById("namaHapus").value.trim();
+            if (!nm) {
+                tampilPesan("⚠️ Tulis nama yang mau dihapus dulu!", "var(--merah)");
+                return;
+            }
+            let data = ambilData();
+            if (data.hasOwnProperty(nm)) {
+                delete data[nm]; // Kuncinya: hapus properti objek
+                simpanData(data);
+                tampilPesan(`🗑️ "${nm}" berhasil dihapus!`, "var(--merah)");
+                document.getElementById("namaHapus").value = "";
+            } else {
+                tampilPesan(`❌ Nama "${nm}" tidak ditemukan!`, "var(--merah)");
+            }
+        }
+
+        function tampilPesan(teks, warna) {
+            let psn = document.getElementById("pesan");
+            psn.textContent = teks;
+            psn.style.color = warna;
+            psn.style.display = "block";
+            setTimeout(()=>psn.style.display="none",3000);
+        }
+    </script>
+</body>
+</html>
